@@ -1,8 +1,11 @@
 
 
 #import "LoginViewController.h"
+#import "NewUserViewController.h"
 
-@interface LoginViewController ()
+#import <Parse/Parse.h>
+
+@interface LoginViewController ()<UITextFieldDelegate>
 
 @end
 
@@ -68,10 +71,32 @@
         [alertView show];
         return;
     }
-
+    
+    PFUser *user = [PFUser user];
+    user.username = username;
+    user.password = password;
+    [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
+        if (error) {
+            //display an alert view to show an error message
+            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:[error userInfo][@"error"] message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+            [alertView show];
+            [self.usernameTextField becomeFirstResponder];
+        }
+        
+    }];
 }
 
 
+
+- (IBAction)signUpButtonPressed:(UIButton *)sender {
+    
+}
+
+-(void)presentNewUserViewController{
+//    NewUserViewController *viewController = [[NewUserViewController alloc]init];
+//    viewController.delegate= self;
+    
+}
 
 
 @end

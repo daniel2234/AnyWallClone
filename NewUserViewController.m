@@ -1,10 +1,3 @@
-//
-//  NewUserViewController.m
-//  AnyWallClone
-//
-//  Created by Daniel Kwiatkowski on 2015-05-12.
-//  Copyright (c) 2015 Daniel Kwiatkowski. All rights reserved.
-//
 
 #import "NewUserViewController.h"
 
@@ -12,26 +5,83 @@
 
 @end
 
+
+
 @implementation NewUserViewController
+
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (IBAction)createButtonPressed:(UIButton *)sender {
+    [self dismissKeyboard];
+    [self processFieldEntries];
 }
 
-/*
-#pragma mark - Navigation
+- (IBAction)closeButtonPressed:(UIButton *)sender {
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
-*/
+
+//dismiss keyboard after tapping out
+-(void)dismissKeyboard{
+    [self.view endEditing:YES];
+}
+
+
+
+-(void)processFieldEntries{
+    NSString *username = self.usernameTextField.text;
+    NSString *password = self.passwordTextField.text;
+    NSString *passwordAgain = self.passwordAgainTextField.text;
+    NSString *errorText = @"Please";
+    NSString *usernameBlankText = @"Enter a username";
+    NSString *passwordBlankText = @"Enter a password";
+    NSString *joinText = @", and ";
+    NSString *passwordMismatchText = @"Enter the same password twice";
+    BOOL textError = NO;
+    
+    // Messaging nil will return 0, so these checks implicitly check for nil text.
+    if (username.length == 0 || password.length == 0 || passwordAgain.length == 0) {
+        textError = YES;
+        
+        if (passwordAgain.length == 0) {
+            [self.passwordAgainTextField becomeFirstResponder];
+        }
+        
+        if (password.length == 0) {
+            [self.passwordTextField becomeFirstResponder];
+        }
+        
+        if (username.length == 0) {
+            [self.usernameTextField becomeFirstResponder];
+        }
+        
+        if (username.length == 0) {
+            errorText = [errorText stringByAppendingString:usernameBlankText];
+        }
+        
+        if (password.length == 0 || passwordAgain.length == 0) {
+            if (username.length == 0) {
+                errorText = [ errorText stringByAppendingString:joinText];
+            }
+            errorText = [errorText stringByAppendingString:passwordBlankText];
+        }
+        
+    } else if ([password compare:passwordAgain] != NSOrderedSame){
+        textError = YES;
+        errorText = [errorText stringByAppendingString:passwordMismatchText];
+        [self.passwordTextField becomeFirstResponder];
+    }
+    
+    if (textError) {
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:errorText message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"", nil];
+        [alertView show];
+        return;
+    }
+}
+
+
 
 @end
