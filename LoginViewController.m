@@ -5,7 +5,7 @@
 
 #import <Parse/Parse.h>
 
-@interface LoginViewController ()<UITextFieldDelegate>
+@interface LoginViewController ()<NewUserViewControllerDelegate>
 
 @end
 
@@ -72,18 +72,30 @@
         return;
     }
     
-    PFUser *user = [PFUser user];
-    user.username = username;
-    user.password = password;
-    [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
-        if (error) {
-            //display an alert view to show an error message
-            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:[error userInfo][@"error"] message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+    //setup future activity view
+//    self.activityViewVisible = YES;
+    
+    
+    [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser *user, NSError *error){
+//        self.activityViewVisible = NO;
+        if (user) {//Login successful
+            [self.delegate loginViewControllerDidLogin:self];
+        } else { //Login Failed
+            NSString *alertTitle = nil;
+            if (error) {
+                //something else went wrong
+                alertTitle = [error userInfo][@"error"];
+            } else {
+                //the username and password is wrong
+                alertTitle = @"Couldnt log \n The username or password is wrong";
+            }
+            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:alertTitle message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
             [alertView show];
             [self.usernameTextField becomeFirstResponder];
         }
-        
     }];
+    
+    //handle success in the future
 }
 
 
@@ -93,10 +105,13 @@
 }
 
 -(void)presentNewUserViewController{
-//    NewUserViewController *viewController = [[NewUserViewController alloc]init];
-//    viewController.delegate= self;
-    
+    NewUserViewController *viewController = [[NewUserViewController alloc]init];
+    viewController.delegate = self;
+    [self.navigationController presentViewController:viewController animated:YES completion:nil];
 }
-
+//that when the user signs up or logs in successfully, we want to show the main view controller. At this point the PAWNewUserViewController has informed the PAWLoginViewController that a user has signed up. We can set up the PAWLoginViewController to "forward" this information by having it define a protocol with a method that we can call. We can use the same method in cases where the user has successfully logged in.
+-(void)newUserViewControllerDidSignup:(NewUserViewController *)controller{
+    [self.delegate loginViewControllerDidLogin:self];
+}
 
 @end

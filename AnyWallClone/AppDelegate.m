@@ -7,8 +7,10 @@
 //
 
 #import "AppDelegate.h"
+#import "LoginViewController.h"
+#import "WallViewController.h"
 
-@interface AppDelegate ()
+@interface AppDelegate () <LoginViewControllerDelegate>
 
 @end
 
@@ -18,6 +20,22 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     return YES;
+}
+
+-(void)presentLoginViewController{
+    //Go to the login account and create an account
+    LoginViewController *viewController = [[LoginViewController alloc]init];
+    viewController.delegate = self;
+    [self.navigationController setViewControllers:@[viewController] animated:NO];
+}
+
+-(void)loginViewControllerDidLogin:(LoginViewController *)controller{
+    [self presentLoginViewControllerAnimated:YES];
+}
+//implement later
+-(void) presentLoginViewControllerAnimated:(BOOL)animate{
+//    WallViewController *wallViewController = [[WallViewController alloc]init];
+//    wallViewController.de
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

@@ -8,7 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@class NewUserViewController;
+
+@protocol NewUserViewControllerDelegate <NSObject>
+
+-(void)newUserViewControllerDidSignup:(NewUserViewController*)controller;
+
+@end
+
 @interface NewUserViewController : UIViewController
+
+@property (nonatomic, weak) id<NewUserViewControllerDelegate>delegate; //need to clarify
 
 @property (strong, nonatomic) IBOutlet UITextField *usernameTextField;
 @property (strong, nonatomic) IBOutlet UITextField *passwordTextField;
