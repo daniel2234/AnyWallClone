@@ -7,8 +7,16 @@
 //
 
 #import "WallViewController.h"
+#import "Constants.h"
+#import "Post.h"
+#import "WallPostCreateViewController.h"
+#import "WallPostTableViewController.h"
+
 
 @interface WallViewController ()
+
+@property (nonatomic,strong) CLLocationManager *locationManager;
+@property (nonatomic,strong) CLLocation *currentLocation;
 
 @end
 
@@ -23,6 +31,24 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+
+
+-(void) setCurrentLocation:(CLLocation *) currentLocation{
+    if (self.currentLocation == currentLocation) {
+        _currentLocation = currentLocation;
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter]postNotificationName:CurrentLocationDuringChangeNotification object:nil userInfo:@{LocationKey:currentLocation}];
+    });
+}
+
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
+    self.currentLocation = [locations lastObject];
+}
+
 
 /*
 #pragma mark - Navigation

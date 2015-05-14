@@ -5,6 +5,8 @@
 //  Created by Daniel Kwiatkowski on 2015-05-12.
 //  Copyright (c) 2015 Daniel Kwiatkowski. All rights reserved.
 //
+#import <Parse/Parse.h>
+
 
 #import "AppDelegate.h"
 #import "LoginViewController.h"
@@ -18,7 +20,10 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+
+    [Parse setApplicationId:@"wGW6XrvNL81P00VYNSIzwNor6CwqEkijTQUR4NGV"
+                   clientKey:@"cDs1XTpM7hbbCuoWkbB52d2dmqeJcm6skkR0YEM8"];
+
     return YES;
 }
 

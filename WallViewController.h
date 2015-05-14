@@ -7,7 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
 
-@interface WallViewController : UIViewController
+@class Post;
+
+@interface WallViewController : UIViewController <MKMapViewDelegate,CLLocationManagerDelegate>
+
+
+@end
+
+
+@protocol WallViewControllerHighlight <NSObject>
+
+- (void)highlightCellForPost:(Post *)post;
+- (void)unhighlightCellForPost:(Post *)post;
 
 @end

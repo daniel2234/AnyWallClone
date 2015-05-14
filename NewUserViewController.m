@@ -81,9 +81,11 @@
         [alertView show];
         return;
     }
+        //validate data input
         PFUser *user = [PFUser user];
         user.username = username;
         user.password = password;
+        //block checks in with an alert
         [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error){
             if (error) {
             //display an alert view to show an error message

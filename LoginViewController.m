@@ -5,7 +5,7 @@
 
 #import <Parse/Parse.h>
 
-@interface LoginViewController ()<NewUserViewControllerDelegate>
+@interface LoginViewController ()<UITextFieldDelegate,NewUserViewControllerDelegate>
 
 @end
 
@@ -101,13 +101,20 @@
 
 
 - (IBAction)signUpButtonPressed:(UIButton *)sender {
-    
+    [self presentNewUserViewController];
 }
 
+
+- (IBAction)loginWithFacebookPressed:(UIButton *)sender {
+
+}
+
+
 -(void)presentNewUserViewController{
-    NewUserViewController *viewController = [[NewUserViewController alloc]init];
-    viewController.delegate = self;
-    [self.navigationController presentViewController:viewController animated:YES completion:nil];
+//    NewUserViewController *viewController = [[NewUserViewController alloc] init];
+//    viewController.delegate = self;
+////    [self.navigationController presentViewController:viewController animated:YES completion:nil];
+//    [self.navigationController pushViewController:viewController animated:YES];
 }
 //that when the user signs up or logs in successfully, we want to show the main view controller. At this point the PAWNewUserViewController has informed the PAWLoginViewController that a user has signed up. We can set up the PAWLoginViewController to "forward" this information by having it define a protocol with a method that we can call. We can use the same method in cases where the user has successfully logged in.
 -(void)newUserViewControllerDidSignup:(NewUserViewController *)controller{
